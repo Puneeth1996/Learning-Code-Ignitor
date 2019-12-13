@@ -1,5 +1,5 @@
 <?php 
-    class LearningGroceryCrud extends CI_Controller {  
+    class LearnGroceryCrud extends CI_Controller {  
 
         public function index() { 
             $this->load->view('test');  
