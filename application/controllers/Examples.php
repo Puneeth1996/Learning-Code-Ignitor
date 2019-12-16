@@ -59,17 +59,6 @@ class Examples extends CI_Controller {
 		$this->_example_output($output);
 	}
 
-	function my_boss_is_in_a_hurry() {
-		$crud = new grocery_CRUD();
-		$crud->set_table('customers');
-		$crud->columns('customerName','phone','addressLine1','creditLimit');
-	
-		$output = $crud->render();
-	
-		$this->_example_output($output);
-	}
-
-
 	public function employees_management()
 	{
 			$crud = new grocery_CRUD();
