@@ -290,23 +290,34 @@ class LearnGroceryCrud extends CI_Controller {
         return site_url('LearnGroceryCrud/student_add_action/action_photos').'?city='.$row->city;
     }
 	
-	function example_callback_add_field(){
+	function student_callback_add_field(){
 		$crud = new grocery_CRUD();
-	
-		$crud->set_table('offices');
-		$crud->set_subject('Office');
-		$crud->required_fields('city');
-		$crud->columns('city','country','phone','addressLine1','postalCode');
-	
-		$crud->callback_add_field('phone', function () {
-			return '+30 <input type="text" maxlength="50" value="" name="phone">';
-		});
-		$crud->callback_add_field('state',function () {
-			return '<input type="text" maxlength="50" value="" name="state"> ( for U.S. only )';
+		$crud->set_table('student_management');
+		$crud->set_subject('callback_add_field Student');
+		$crud->required_fields('name');
+		$crud->columns('city','roll_no','name');
+		$crud->callback_add_field('city',function () {
+			return '<input type="text" maxlength="50" value="" name="city"> ( for I.N only )';
 		});
 	
 		$output = $crud->render();
 	
 		$this->_example_output($output);
 	}
+}
+
+public function user(){
+	$crud = new grocery_CRUD();
+	$crud->set_table('cms_user');
+	$crud->set_subject('User List');
+	$crud->required_fields('username');
+	$crud->columns('username','email','real_name','active');
+	$crud->change_field_type('active', 'true_false');
+	$crud->callback_after_delete(array($this,'user_after_delete'));
+	$output = $crud->render();
+	$this->_example_output($output);
+}
+
+public function user_after_delete($primary_key){
+    return $this->db->insert('user_logs',array('user_id' => $primary_key,'action'=>'delete', 'updated' => date('Y-m-d H:i:s')));
 }
