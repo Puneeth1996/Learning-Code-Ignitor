@@ -260,7 +260,7 @@ class LearnGroceryCrud extends CI_Controller {
     public function student_add_fields(){
         $crud = new grocery_CRUD();
         $crud->set_table('student_management')
-            ->set_subject('Adding New Student')
+            ->set_subject('add_fields Student')
             ->columns('roll_no','name');
         $crud->add_fields(array('roll_no','name','city'));
         $crud->edit_fields(array('roll_no','name','city'));
@@ -271,6 +271,21 @@ class LearnGroceryCrud extends CI_Controller {
         // ALTER TABLE student_management ADD city VARCHAR( 255 ) after name
     }
 
-    
+    public function student_add_action(){
+        $crud = new grocery_CRUD();
+        $crud->set_theme('datatables');
+        $crud->set_table('student_management');
+        $crud->set_subject('add_action Student');
+        $crud->required_fields('name');
+        $crud->columns('city','roll_no','name');
+        $crud->add_action('More', '', 'LearnGroceryCrud/student_add_action/action_more','ui-icon-circle-plus');
+        $crud->add_action('Photos', '', '','ui-icon-image',array($this,'just_a_test'));
+        $crud->add_action('Smileys', 'http://localhost/bcit-ci-CodeIgniter-b73eb19/Learning-Code-Ignitor/images/freebies1_glyph-09-512.png', 'LearnGroceryCrud/student_add_action/action_smiley');
+        $output = $crud->render();
+        $this->_example_output($output);
+    }
 
+    function just_a_test($primary_key , $row) {
+        return site_url('LearnGroceryCrud/student_add_action/action_photos').'?city='.$row->city;
+    }
 }
