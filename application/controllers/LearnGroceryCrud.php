@@ -283,9 +283,30 @@ class LearnGroceryCrud extends CI_Controller {
         $crud->add_action('Smileys', 'http://localhost/bcit-ci-CodeIgniter-b73eb19/Learning-Code-Ignitor/images/freebies1_glyph-09-512.png', 'LearnGroceryCrud/student_add_action/action_smiley');
         $output = $crud->render();
         $this->_example_output($output);
+		// there can any addition action added with easy implementation of their Functionalities
     }
 
     function just_a_test($primary_key , $row) {
         return site_url('LearnGroceryCrud/student_add_action/action_photos').'?city='.$row->city;
     }
+	
+	function example_callback_add_field(){
+		$crud = new grocery_CRUD();
+	
+		$crud->set_table('offices');
+		$crud->set_subject('Office');
+		$crud->required_fields('city');
+		$crud->columns('city','country','phone','addressLine1','postalCode');
+	
+		$crud->callback_add_field('phone', function () {
+			return '+30 <input type="text" maxlength="50" value="" name="phone">';
+		});
+		$crud->callback_add_field('state',function () {
+			return '<input type="text" maxlength="50" value="" name="state"> ( for U.S. only )';
+		});
+	
+		$output = $crud->render();
+	
+		$this->_example_output($output);
+	}
 }
