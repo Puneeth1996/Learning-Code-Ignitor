@@ -183,71 +183,6 @@ class LearnGroceryCrud extends CI_Controller {
 				'output'	=> $output
 		));
 	}
-
-	public function offices_management2()
-	{
-		$crud = new grocery_CRUD();
-		$crud->set_table('offices');
-		$crud->set_subject('Office');
-
-		$crud->set_crud_url_path(site_url(strtolower(__CLASS__."/".__FUNCTION__)),site_url(strtolower(__CLASS__."/multigrids")));
-
-		$output = $crud->render();
-
-		if($crud->getState() != 'list') {
-			$this->_example_output($output);
-		} else {
-			return $output;
-		}
-	}
-
-	public function employees_management2()
-	{
-		$crud = new grocery_CRUD();
-
-		$crud->set_theme('datatables');
-		$crud->set_table('employees');
-		$crud->set_relation('officeCode','offices','city');
-		$crud->display_as('officeCode','Office City');
-		$crud->set_subject('Employee');
-
-		$crud->required_fields('lastName');
-
-		$crud->set_field_upload('file_url','assets/uploads/files');
-
-		$crud->set_crud_url_path(site_url(strtolower(__CLASS__."/".__FUNCTION__)),site_url(strtolower(__CLASS__."/multigrids")));
-
-		$output = $crud->render();
-
-		if($crud->getState() != 'list') {
-			$this->_example_output($output);
-		} else {
-			return $output;
-		}
-	}
-
-	public function customers_management2()
-	{
-		$crud = new grocery_CRUD();
-
-		$crud->set_table('customers');
-		$crud->columns('customerName','contactLastName','phone','city','country','salesRepEmployeeNumber','creditLimit');
-		$crud->display_as('salesRepEmployeeNumber','from Employeer')
-            ->display_as('customerName','Name')
-            ->display_as('contactLastName','Last Name');
-		$crud->set_subject('Customer');
-		$crud->set_relation('salesRepEmployeeNumber','employees','lastName');
-
-		$crud->set_crud_url_path(site_url(strtolower(__CLASS__."/".__FUNCTION__)),site_url(strtolower(__CLASS__."/multigrids")));
-
-		$output = $crud->render();
-
-		if($crud->getState() != 'list') {
-			$this->_example_output($output);
-		} else {
-			return $output;
-		}
-    }
     
 	public function student_management()
 	{
@@ -299,25 +234,63 @@ class LearnGroceryCrud extends CI_Controller {
 		$crud->callback_add_field('city',function () {
 			return '<input type="text" maxlength="50" value="" name="city"> ( for I.N only )';
 		});
+		// $crud->callback_after_delete(function after_delete(){
+		// 	return (echo "<script type='text/javascript'>alert('sdf asdf adf as');</script>");
+		// });
 	
 		$output = $crud->render();
 	
 		$this->_example_output($output);
 	}
+
+	// function student_callback_after_delete(){
+	// 	$crud = new grocery_CRUD();
+	// 	$crud->set_table('student_management');
+	// 	$crud->set_subject('callback_add_field Student');
+	// 	$crud->required_fields('name');
+	// 	$crud->columns('city','roll_no','name');
+	// 	// $crud->callback_after_delete(echo "<script type='text/javascript'>alert('sdf asdf adf as');</script>");
+	// 	$output = $crud->render();
+	// 	$this->_example_output($output);
+	// 	// $crud = new grocery_CRUD();
+	// 	// $crud->set_table('student_management');
+	// 	// $crud->callback_after_delete(function after_delete () {
+	// 	// 	return echo "<script type='text/javascript'>alert('sdf asdf adf as');</script>";
+	// 	// } );
+	// 	// $output = $crud->render();
+	// 	// $this->_example_output($output);
+	// 	// $crud->callback_after_delete(array($this,'user_after_delete'));
+	// }
+
+	// function employees_management()
+	// {
+	// 	$crud = new grocery_CRUD();	
+	// 	$crud->set_table('employees');
+	// 	$crud->set_relation('officeCode','offices','city');
+	// 	$crud->display_as('officeCode','Office City');
+	// 	$crud->set_subject('Employee');	
+	// 	$crud->set_field_upload('file_url','assets/uploads/files');
+	// 	$crud->callback_before_upload(array($this,'example_callback_before_upload'));	
+	// 	$output = $crud->render();	
+	// 	$this->_example_output($output);
+	// }    
+	
+	
+	// function example_callback_before_upload($files_to_upload,$field_info)
+	// {
+	// 	if(is_dir($field_info->upload_path))
+	// 	{
+	// 		return true;
+	// 	}
+	// 	else
+	// 	{
+	// 		return 'I am sorry but it seems that the folder that you are trying to upload doesn\'t exist.';    
+	// 	}
+	
+	// }
 }
 
-public function user(){
-	$crud = new grocery_CRUD();
-	$crud->set_table('cms_user');
-	$crud->set_subject('User List');
-	$crud->required_fields('username');
-	$crud->columns('username','email','real_name','active');
-	$crud->change_field_type('active', 'true_false');
-	$crud->callback_after_delete(array($this,'user_after_delete'));
-	$output = $crud->render();
-	$this->_example_output($output);
-}
 
-public function user_after_delete($primary_key){
-    return $this->db->insert('user_logs',array('user_id' => $primary_key,'action'=>'delete', 'updated' => date('Y-m-d H:i:s')));
-}
+
+
+
