@@ -34,8 +34,6 @@ class Examples extends CI_Controller {
 		try{
 			$crud = new grocery_CRUD();
 
-			$crud = new 
-
 			$crud->set_theme('datatables');
 			$crud->set_table('offices');
 			$crud->set_subject('Office');
@@ -49,14 +47,6 @@ class Examples extends CI_Controller {
 		}catch(Exception $e){
 			show_error($e->getMessage().' --- '.$e->getTraceAsString());
 		}
-	}
-
-	public function student_management()
-	{
-		$crud = new grocery_CRUD();
-		$crud->set_table('student_management');
-		$output = $crud->render();
-		$this->_example_output($output);
 	}
 
 	public function employees_management()
@@ -85,8 +75,8 @@ class Examples extends CI_Controller {
 			$crud->set_table('customers');
 			$crud->columns('customerName','contactLastName','phone','city','country','salesRepEmployeeNumber','creditLimit');
 			$crud->display_as('salesRepEmployeeNumber','from Employeer')
-					->display_as('customerName','Name')
-					->display_as('contactLastName','Last Name');
+				 ->display_as('customerName','Name')
+				 ->display_as('contactLastName','Last Name');
 			$crud->set_subject('Customer');
 			$crud->set_relation('salesRepEmployeeNumber','employees','lastName');
 
